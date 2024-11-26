@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" dir="{% render 'direction' %}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="theme-color" content="{{ settings.header_background }}">
+    <title>{% if page_title == blank %}{{ shop.name }}{% else %}{{ page_title }}{% if current_page != 1 %} &ndash; {{ 'general.page' | t: page: current_page }}{% endif %}{% endif %}</title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    <link rel="canonical" href="{{ canonical_url }}">
+    {%- if settings.favicon -%}
+      <link rel="shortcut icon" href="{{ settings.favicon | image_url: width: 96 }}">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180 }}">
+    {%- endif -%}
+
+    <link rel="preconnect" href="https://cdn.shopify.com">
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
+
+    {%- unless settings.heading_font.system? -%}
+      <link rel="preload" href="{{ settings.heading_font | font_url }}" as="font" type="font/woff2" crossorigin>
+    {%- endunless -%}
+
+    {%- unless settings.text_font.system? -%}
+      <link rel="preload" href="{{ settings.text_font | font_url }}" as="font" type="font/woff2" crossorigin>
+    {%- endunless -%}
+
+    {%- render 'social-meta-tags' -%}
+    {%- render 'microdata-schema' -%}
+    {%- render 'css-variables' -%}
+    {%- render 'js-variables' -%}
+
+    <!-- Stylesheets -->
+    {{- 'theme.css' | asset_url | stylesheet_tag: preload: true -}}
+    {{- '1custom.css' | asset_url | stylesheet_tag: preload: true -}}
+
+    {{ content_for_header }}
+
+    <!-- Load jQuery with defer -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" ></script>
+    <script type="module" src="{{ 'sections.js' | asset_url }}" defer></script>
+
+    <!-- Intelligems Script -->
+    <script src="https://cdn.intelligems.io/2c048ef87024.js"></script>
+
+  <!-- heatmap.com snippet -->
+  <!-- <script>
+    (function() {      
+      var _heatmap_paq = window._heatmap_paq || [];
+      var heatUrl = window.heatUrl = "https://dashboard.heatmap.com/";
+      function heatLoader(url, item) {
+        if(typeof handleSinglePagedWebsite !== 'undefined' && item == 'prep') return true;
+        var s = document.createElement("script"); s.type = "text/javascript"; 
+        s.src = url; s.async = false; s.defer = true; document.head.appendChild(s);
+      }
+      heatLoader(heatUrl+"preprocessor.min.js?sid=2641", "prep");
+      setTimeout(function() {
+        if(typeof _heatmap_paq !== "object" || _heatmap_paq.length == 0) {     
+          _heatmap_paq.push(["setTrackerUrl", heatUrl+"heatmap.php"]);
+          heatLoader(heatUrl+"heatmap-light.min.js?sid=2641", "heat");
+        }
+      }, 1000);
+    })();
+  </script> -->
+  <!-- End heatmap.com snippet Code -->
+</head>
+<body class="{% if settings.show_page_transition %}page-transition{% endif %} {% if settings.zoom_image_on_hover %}zoom-image--enabled{% endif %}">
+    {%- render 'shadow-dom-templates' -%}
+
+    <a href="#main" class="skip-to-content sr-only">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+    {%- if request.page_type != 'password' -%}
+      {%- sections 'header-group' -%}
+      {%- sections 'overlay-group' -%}
+
+      {%- if settings.cart_type == 'popover' -%}
+        <cart-notification-drawer open-from="bottom" class="quick-buy-drawer drawer"></cart-notification-drawer>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if request.page_type == 'customers/account' or request.page_type == 'customers/order' or request.page_type == 'customers/addresses' -%}
+      {%- section 'account-banner' -%}
+    {%- endif -%}
+
+    <main role="main" id="main" class="anchor">
+      {{ content_for_layout }}
+
+      {%- comment -%}
+      IMPLEMENTATION NOTE: due to the very complex logic of margin/padding collapsing in Impact, the footer group is
+      added into the main element to ensure that dynamic sections added into the footer group are properly laid out.
+      {%- endcomment -%}
+      {%- if request.page_type != 'password' -%}
+        {%- sections 'footer-group' -%}
+      {%- endif -%}
+    </main>
+
+    <!-- Script to load Sendlane scripts dynamically on user interaction -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        let sendlaneLoaded = false;
+
+        function loadSendlaneScripts() {
+          if (!sendlaneLoaded) {
+            // Load Sendlane Reviews Widget
+            const sendlaneReviewsScript = document.createElement('script');
+            sendlaneReviewsScript.src = 'https://sendlane.com/scripts/sendlane-reviews-widget.lib.js';
+            sendlaneReviewsScript.setAttribute('sendlane-review-key', 'eyJkb21haW4iOiJjcmF6eWNvbXByZXNzaW9uIiwicmV2aWV3X3NldHRpbmdfaWQiOiJlNzU4NjZhYy0xMjEyLTRkMDEtODc4Yi0zNzVjMmRmMGVlNjgifQ=='); 
+            sendlaneReviewsScript.async = true;
+            document.body.appendChild(sendlaneReviewsScript);
+
+            // Load Sendlane Pusher Script
+            const sendlanePusherScript = document.createElement('script');
+            sendlanePusherScript.src = 'https://sendlane.com/scripts/pusher.js';
+            sendlanePusherScript.async = true;
+            document.body.appendChild(sendlanePusherScript);
+
+            sendlaneLoaded = true;
+          }
+        }
+
+        // Automatically load Sendlane scripts if the URL has "products"
+        if (window.location.pathname.includes('/products/')) {
+          loadSendlaneScripts();
+        }
+
+        // Event listeners for user interaction
+        ['scroll', 'click', 'mousemove', 'touchstart'].forEach(event => {
+          window.addEventListener(event, loadSendlaneScripts, { once: true });
+        });
+      });
+    </script>
+
+    <!-- Vendor and theme scripts -->
+    <script type="module" src="{{ 'vendor.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+</body>
+</html>

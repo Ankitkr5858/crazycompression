@@ -1,0 +1,550 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+MEGA MENU PANEL
+----------------------------------------------------------------------------------------------------------------------
+
+This component is used to show the different links in different panel for the menu drawer
+
+********************************************
+Supported variables
+********************************************
+
+* main_menu: the menu to show for the primary menu
+* secondary_menu: the secondary menu (shown on mobile)
+* mega_menu_block: use when mega menu is set to drawer
+* is_mega_menu: set to true if mega menu is set to drawer
+* layout
+{%- endcomment -%}
+
+<div class="panel-list__wrapper">
+  <div class="panel">
+    <div class="panel__wrapper" {% if mega_menu_block.settings.promo_content_layout == 'grid' or mega_menu_block.settings.promo_content_layout == 'collage' %}style="--panel-wrapper-justify-content: flex-start"{% endif %}>
+      <div class="ham-collections">
+        <div class="collection-menu">
+          <div class="collection-grid">
+              {% for block in section.blocks %}
+                  {% if block.settings.collection != blank %}
+                      {% assign sub_collection_links = linklists[block.settings.sub_collection].links %}
+                      <div class="collection-item" data-panel-index="{{ forloop.index0 }}">
+                        <a href="{%- if sub_collection_links.size > 0 -%}#{%- else -%}{{ block.settings.collection.url }}{%- endif -%}">
+                          {% if block.settings.image or block.settings.collection.image %}
+                            <div class="collection-image">
+                              {% if block.settings.image %}
+                                <img src="{{ block.settings.image | img_url: 'medium' }}" alt="{{ block.settings.custom_title }}">
+                              {% else %}
+                                {% if block.settings.collection.image %}
+                                  <img src="{{ block.settings.collection.image | img_url: 'medium' }}" alt="{{ block.settings.custom_title }}">
+                                {% endif %}
+                              {% endif %}
+                            </div>
+                          {% endif %}
+                          <div class="collection-title">
+                              {{ block.settings.custom_title | default: block.settings.collection.title }}
+                          </div>
+                        </a>
+                    </div>
+                    
+      
+                      <!-- Sub-collection Panel (only render if sub-collections exist) -->
+                      {% comment %} {% if sub_collection_links.size > 0 %}
+                      <div class="sub-collection-panel" data-panel-index="{{ forloop.index0 }}">
+                          <button class="c-back-button back-button"><span><svg xmlns="http://www.w3.org/2000/svg" width="6" height="8" viewBox="0 0 6 8" fill="none">
+                          <path d="M4.5 7L1.5 4L4.5 1" stroke="black" stroke-width="1.5"/>
+                          </svg></span>Back</button>
+      
+                          <div class="sub-collection-grid">
+                              {% for link in sub_collection_links %}
+                                  <div class="sub-collection-item collection-item">
+                                    <div class="sub-collection-image">
+                                      {% if block.settings.collection.image %}
+                                        <img src="{{ block.settings.collection.image | img_url: 'medium' }}" alt="{{ block.settings.custom_title }}">
+                                    {% endif %}
+                                        {% comment %} <img src="{{ link.image | img_url: 'medium' }}" alt="{{ link.title }}"> {% endcomment %}
+                                    </div>
+                                      <div class="sub-collection-title">
+                                          <a href="{{ link.url }}">{{ link.title }}</a>
+                                      </div>
+                                  </div>
+                              {% endfor %}
+                          </div>
+                      </div>
+                      {% endif %} {% endcomment %}
+                  {% endif %}
+              {% endfor %}
+          </div>
+          <div class="">
+            {% for block in section.blocks %}
+              {% if block.settings.collection != blank %}
+                {% assign sub_collection_links = linklists[block.settings.sub_collection].links %}
+                <!-- Sub-collection Panel (only render if sub-collections exist) -->
+                {% if sub_collection_links.size > 0 %}
+                  <div class="sub-collection-panel" data-panel-index="{{ forloop.index0 }}">
+                    <button class="back-button">
+                      <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="6" height="8" viewBox="0 0 6 8" fill="none">
+                          <path d="M4.5 7L1.5 4L4.5 1" stroke="black" stroke-width="1.5"/>
+                        </svg></span
+                      >Back
+                    </button>
+
+                    <div class="sub-collection-grid">
+                      {% for link in sub_collection_links %}
+                        {% comment %} <div class="sub-collection-item collection-item">
+                          <div class="sub-collection-image">
+                            {% if block.settings.collection.image %}
+                              <img
+                                src="{{ block.settings.collection.image | img_url: 'medium' }}"
+                                alt="{{ block.settings.custom_title }}"
+                              >
+                            {% endif %}
+                          </div>
+                          <div class="sub-collection-title">
+                            <a href="{{ link.url }}">{{ link.title }}</a>
+                          </div>
+                        </div> {% endcomment %}
+
+                        <div class="collection-item">
+                        <a href="{{ link.url }}">
+                            <div class="collection-image">
+                              {% if link.object.featured_image %}
+                                  <img src="{{ link.object.featured_image | img_url: 'medium' }}" alt="{{ block.settings.custom_title }}">
+                              {% endif %}
+                            </div>
+                            <div class="collection-title">
+                                {{ link.title }}
+                            </div>
+                        </a>
+                    </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          </div>
+          
+          <div class="v-stack gap-8">
+            {%- if is_mega_menu -%}
+              <button is="close-button" aria-label="{{ 'general.accessibility.close' | t | escape }}" {%- if section.settings.opening_from == 'bottom' -%}class="sm-max:hidden"{%- endif -%}>
+                {%- render 'icon' with 'close', width: 19, height: 19 -%}
+              </button>
+            {%- endif -%}
+    
+            <ul class="c-nav-menu-text v-stack gap-4">
+              {%- for link in main_menu.links -%}
+                {%- unless is_mega_menu -%}
+                  {% liquid
+                    assign link_title_downcase = link.title | downcase
+                    assign mega_menu_block = ''
+                    assign is_image_shown = false
+    
+                    for block in section.blocks
+                      assign menu_item_downcase = block.settings.menu_item | strip | downcase
+    
+                      if menu_item_downcase == link_title_downcase
+                        assign mega_menu_block = block
+    
+                      if block.settings.drawer_link_image == 'show'
+                        assign is_image_shown = true
+                        break
+                      endif
+    
+                        break
+                      endif
+                    endfor %}
+    
+                {%- else -%}
+                  {%- assign is_image_shown = false -%}
+    
+                  {%- if mega_menu_block.settings.drawer_link_image == 'show' -%}
+                    {%- assign is_image_shown = true -%}
+                  {%- endif -%}
+    
+                {%- endunless -%}
+    
+                <li class="h3 sm:h4 {{ link.handle }}">
+                  {% comment %} {%- if link.links.size > 0 or mega_menu_block != '' and is_mega_menu == false -%} {% endcomment %}
+                  {%- if link.links.size > 0 -%}
+                    <button class="text-with-icon w-full group justify-between" aria-expanded="false" data-panel="1-{% increment level_1 %}">
+                      <span>{{ link.title }}</span>
+                      <span class="circle-chevron group-hover:colors group-expanded:colors">{%- render 'icon' with 'chevron-right-small', direction_aware: true -%}</span>
+                    </button>
+                  {%- else -%}
+                    <a href="{{ link.url }}" class="group block w-full">
+                      <span><span class="reversed-link">{{ link.title }}</span></span>
+                    </a>
+                  {%- endif -%}
+                </li>
+    
+                {% comment %} {%- if link.links.size > 0 or mega_menu_block != '' and is_mega_menu == false -%} {% endcomment %}
+                {%- if link.links.size > 0 -%}
+                  {%- capture link_level_2 -%}
+                    {{- link_level_2 -}}
+    
+                    <div class="panel__wrapper" {% if mega_menu_block.settings.promo_content_layout == 'grid' or mega_menu_block.settings.promo_content_layout == 'collage' %}style="--panel-wrapper-justify-content: flex-start"{% endif %} hidden>
+                      <ul class="c-nav-menu-text v-stack {% if is_mega_menu and is_image_shown == 'show' %}gap-3{% else %}gap-4{% endif %}">
+                        <li class="{% if layout != 'drawer' %}lg:hidden{% endif %}">
+                          <button class="text-with-icon h6 text-subdued" data-panel="0">
+                            {%- render 'icon' with 'chevron-left', direction_aware: true -%} {{ link.title }}
+                          </button>
+                        </li>
+    
+                        {%- if link.links.size > 0 -%}
+                          {%- for sub_link in link.links -%}
+                            <li class="h3 {% if is_mega_menu %}sm:h5{% else %}sm:h4{% endif %}">
+                              {%- if sub_link.links.size > 0 -%}
+                                <button class="text-with-icon w-full justify-between" aria-expanded="false" data-panel="2-{% increment level_2 %}">
+                                  <span>{{ sub_link.title }}</span>
+                                  <span class="circle-chevron group-hover:colors group-expanded:colors">{%- render 'icon' with 'chevron-right-small', direction_aware: true -%}</span>
+                                </button>
+                              {%- else -%}
+                                <a class="group {% if is_image_shown and is_mega_menu %}h-stack gap-4{% else %}block w-full{% endif %}" href="{{ sub_link.url }}">
+                                  {%- if is_image_shown and sub_link.object != blank and is_mega_menu -%}
+                                    {%- assign sub_link_image = '' -%}
+    
+                                    {%- case sub_link.type -%}
+                                      {%- when 'collection_link' -%}
+                                        {%- assign sub_link_image = sub_link.object.products.first.featured_media -%}
+    
+                                      {%- when 'product_link' -%}
+                                        {%- assign sub_link_image = sub_link.object.featured_media -%}
+    
+                                      {%- when 'blog_link' -%}
+                                        {%- assign sub_link_image = sub_link.object.articles.first.image -%}
+    
+                                      {%- when 'article_link' -%}
+                                        {%- assign sub_link_image = sub_link.object.image -%}
+                                    {%- endcase -%}
+    
+                                    {%- if sub_link_image != '' -%}
+                                      {{- sub_link_image | image_url: width: 120 | image_tag: loading: 'lazy', sizes: '60px', widths: '120', class: 'panel-link__image rounded' -}}
+                                    {%- endif -%}
+                                  {%- endif -%}
+    
+                                  <span><span class="reversed-link">{{ sub_link.title }}</span></span>
+                                </a>
+                              {%- endif -%}
+                            </li>
+    
+                            {%- if sub_link.links.size > 0 -%}
+                              {%- capture link_level_3 -%}
+                                {{- link_level_3 -}}
+    
+                                <div class=".c-nav-menu-text panel__wrapper" hidden>
+                                  <ul class="v-stack {% if is_image_shown %}gap-3{% else %}gap-4{% endif %}">
+                                    <li class="text-with-icon {% if layout != 'drawer' %}lg:hidden{% endif %}">
+                                      <button class="text-with-icon h6 text-subdued" data-panel="1">
+                                        {%- render 'icon' with 'chevron-left', direction_aware: true -%} {{ sub_link.title }}
+                                      </button>
+                                    </li>
+    
+                                    {%- for sub_sub_link in sub_link.links -%}
+                                      <li class="{% if mobile_opening == 'left' %}h3{% else %}h5{% endif %} sm:h5">
+                                        <a class="group {% if is_image_shown %}h-stack gap-4{% else %}block w-full{% endif %}"
+                                           href="{{ sub_sub_link.url }}">
+                                          {%- if is_image_shown and sub_sub_link.object != blank -%}
+                                            {%- assign sub_sub_link_image = '' -%}
+    
+                                            {%- case sub_sub_link.type -%}
+                                              {%- when 'collection_link' -%}
+                                                {%- assign sub_sub_link_image = sub_sub_link.object.products.first.featured_media -%}
+    
+                                              {%- when 'product_link' -%}
+                                                {%- assign sub_sub_link_image = sub_sub_link.object.featured_media -%}
+    
+                                              {%- when 'blog_link' -%}
+                                                {%- assign sub_sub_link_image = sub_sub_link.object.articles.first.image -%}
+    
+                                              {%- when 'article_link' -%}
+                                                {%- assign sub_sub_link_image = sub_sub_link.object.image -%}
+                                            {%- endcase -%}
+    
+                                            {%- if sub_sub_link_image != blank -%}
+                                              {{- sub_sub_link_image | image_url: width: 104 | image_tag: loading: 'lazy', sizes: '52px', widths: '52,104', class: 'panel-link__image rounded' -}}
+                                            {%- endif -%}
+                                          {%- endif -%}
+    
+                                          <span><span class="reversed-link">{{ sub_sub_link.title }}</span></span>
+                                        </a>
+                                      </li>
+                                    {%- endfor -%}
+                                  </ul>
+                                </div>
+                              {%- endcapture -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                        {%- endif -%}
+                      </ul>
+                      <div class="hamburger-menu-content"> 
+                        <div class="ham-star">
+                          {% if section.settings.ratings != blank %}
+                            <div class="stars text-center">
+                              {% assign rating = section.settings.ratings %}
+                              {% for i in (1..rating) %}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 16 15" fill="none">
+                <path d="M15.1114 6.45779C15.2765 6.33473 15.3991 6.16307 15.4618 5.96686C15.5245 5.77065 15.5242 5.55974 15.461 5.3637C15.3977 5.16767 15.2747 4.99633 15.1092 4.87372C14.9437 4.75111 14.744 4.68337 14.538 4.68001L10.538 4.5289C10.5184 4.52754 10.4995 4.52053 10.4837 4.5087C10.468 4.49687 10.456 4.48073 10.4491 4.46223L9.06692 0.7289C8.99747 0.538962 8.87134 0.374952 8.70559 0.259076C8.53984 0.1432 8.34249 0.0810547 8.14025 0.0810547C7.93802 0.0810547 7.74067 0.1432 7.57492 0.259076C7.40917 0.374952 7.28304 0.538962 7.21359 0.7289L5.83581 4.47557C5.829 4.49407 5.81699 4.5102 5.80121 4.52203C5.78544 4.53386 5.76659 4.54088 5.74692 4.54223L1.74692 4.69334C1.54097 4.69671 1.34123 4.76444 1.17572 4.88705C1.01021 5.00966 0.887215 5.181 0.823993 5.37704C0.76077 5.57308 0.760487 5.78399 0.823181 5.98019C0.885876 6.1764 1.00841 6.34807 1.17359 6.47112L4.31137 8.93779C4.32707 8.95015 4.33881 8.96684 4.34513 8.98579C4.35145 9.00475 4.35207 9.02515 4.34692 9.04446L3.26692 12.8711C3.21096 13.066 3.21638 13.2734 3.28245 13.465C3.34852 13.6567 3.47203 13.8234 3.63619 13.9424C3.80034 14.0613 3.99716 14.1269 4.19988 14.13C4.4026 14.1332 4.60136 14.0738 4.76914 13.96L8.0847 11.7378C8.10103 11.7265 8.12041 11.7205 8.14025 11.7205C8.1601 11.7205 8.17948 11.7265 8.19581 11.7378L11.5114 13.96C11.6769 14.0777 11.8749 14.141 12.078 14.141C12.2811 14.141 12.4792 14.0777 12.6447 13.96C12.8089 13.8421 12.9325 13.6763 12.9986 13.4853C13.0646 13.2943 13.0699 13.0875 13.0136 12.8933L11.9247 9.05334C11.9189 9.03407 11.9192 9.01348 11.9256 8.99439C11.932 8.9753 11.9441 8.95864 11.9603 8.94668L15.1114 6.45779Z" fill="#9940B1"/>
+                </svg>
+                              {% endfor %}
+                            </div>
+                          {% endif %}
+                          
+                        </div>
+                        <div class="c-top-content">
+                            <h2 class="c-testimonal-header">{{ section.settings.heading }}</h2>
+                            <div>{{ section.settings.content_text }}</div>
+                            <h3>{{ section.settings.lastname }}</h3>
+                        </div>
+                       </div>
+                       {%- if social_media != blank or country_selector or locale_selector or shop.customer_accounts_enabled -%}
+                        <div class="panel-footer v-stack gap-5">
+                         
+              
+                          {%- if country_selector or locale_selector or shop.customer_accounts_enabled -%}
+                            <div class="panel-footer__localization-wrapper h-stack gap-6 border-t md:hidden">
+                              {%- if country_selector -%}
+                                {%- render 'localization-selector', type: 'country', show_country_name: show_country_name, show_country_flag: show_country_flag -%}
+                              {%- endif -%}
+              
+                              {%- if locale_selector -%}
+                                {%- render 'localization-selector', type: 'locale' -%}
+                              {%- endif -%}
+              
+                              {%- if shop.customer_accounts_enabled -%}
+                                <div class="ham-last-optn">
+                                <a href="{{ routes.account_url }}" class="panel-footer__account-link bold text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+                                <path d="M4.75031 4.75001C4.75031 3.88813 5.09282 3.06121 5.70219 2.45188C6.31157 1.84251 7.13846 1.5 8.00033 1.5C8.86215 1.5 9.68913 1.84251 10.2985 2.45188C10.9078 3.06125 11.2503 3.88815 11.2503 4.75001C11.2503 5.61184 10.9078 6.43881 10.2985 7.04815C9.68909 7.65752 8.86219 8.00003 8.00033 8.00003C7.13845 7.99878 6.31286 7.65628 5.70353 7.04691C5.09415 6.43753 4.75165 5.61197 4.75041 4.75011L4.75031 4.75001ZM13.9735 13.8313C13.5804 11.9945 12.3647 10.4408 10.676 9.61761C8.98725 8.79511 7.01351 8.79511 5.32485 9.61761C3.63605 10.4407 2.42058 11.9944 2.02738 13.8313C1.94676 14.2357 2.05301 14.6539 2.3155 14.9713C2.5905 15.307 3.00238 15.5013 3.43675 15.5001H12.5642C12.9986 15.5013 13.4105 15.307 13.6855 14.9707C13.948 14.6538 14.0542 14.2351 13.9736 13.8313H13.9735Z" fill="black"/>
+                                </svg>{{- 'header.general.account' | t -}}</a>
+                                </div>
+                              {%- endif -%}
+                              {{- social_media -}}
+                            </div>
+                          {%- endif -%}
+                        </div>
+                      {%- endif -%}
+                      {%- if section.settings.show_social_media -%}
+                      {%- capture social_media -%}{%- render 'social-media' -%}{%- endcapture -%}
+                    {%- endif -%}
+                      {%- unless is_mega_menu -%}
+                        {%- if mega_menu_block != '' -%}
+                          {%- render 'navigation-promo-block', navigation_layout: layout, mega_menu_block: mega_menu_block, is_navigation_drawer: true, link_col: link.links.size -%}
+                        {%- endif -%}
+                      {%- endunless -%}
+                    </div>
+                  {%- endcapture -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+
+      </div>
+
+        {%- if secondary_menu != blank -%}
+          <ul class="v-stack gap-3">
+            {%- for link in secondary_menu.links -%}
+              <li>
+                <a href="{{ link.url }}" class="h6 group"><span><span class="reversed-link">{{ link.title }}</span></span></a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+      <div class="hamburger-menu-content"> 
+        <div class="ham-star">
+          {% if section.settings.ratings != blank %}
+            <div class="stars text-center">
+              {% assign rating = section.settings.ratings %}
+              {% for i in (1..rating) %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 16 15" fill="none">
+<path d="M15.1114 6.45779C15.2765 6.33473 15.3991 6.16307 15.4618 5.96686C15.5245 5.77065 15.5242 5.55974 15.461 5.3637C15.3977 5.16767 15.2747 4.99633 15.1092 4.87372C14.9437 4.75111 14.744 4.68337 14.538 4.68001L10.538 4.5289C10.5184 4.52754 10.4995 4.52053 10.4837 4.5087C10.468 4.49687 10.456 4.48073 10.4491 4.46223L9.06692 0.7289C8.99747 0.538962 8.87134 0.374952 8.70559 0.259076C8.53984 0.1432 8.34249 0.0810547 8.14025 0.0810547C7.93802 0.0810547 7.74067 0.1432 7.57492 0.259076C7.40917 0.374952 7.28304 0.538962 7.21359 0.7289L5.83581 4.47557C5.829 4.49407 5.81699 4.5102 5.80121 4.52203C5.78544 4.53386 5.76659 4.54088 5.74692 4.54223L1.74692 4.69334C1.54097 4.69671 1.34123 4.76444 1.17572 4.88705C1.01021 5.00966 0.887215 5.181 0.823993 5.37704C0.76077 5.57308 0.760487 5.78399 0.823181 5.98019C0.885876 6.1764 1.00841 6.34807 1.17359 6.47112L4.31137 8.93779C4.32707 8.95015 4.33881 8.96684 4.34513 8.98579C4.35145 9.00475 4.35207 9.02515 4.34692 9.04446L3.26692 12.8711C3.21096 13.066 3.21638 13.2734 3.28245 13.465C3.34852 13.6567 3.47203 13.8234 3.63619 13.9424C3.80034 14.0613 3.99716 14.1269 4.19988 14.13C4.4026 14.1332 4.60136 14.0738 4.76914 13.96L8.0847 11.7378C8.10103 11.7265 8.12041 11.7205 8.14025 11.7205C8.1601 11.7205 8.17948 11.7265 8.19581 11.7378L11.5114 13.96C11.6769 14.0777 11.8749 14.141 12.078 14.141C12.2811 14.141 12.4792 14.0777 12.6447 13.96C12.8089 13.8421 12.9325 13.6763 12.9986 13.4853C13.0646 13.2943 13.0699 13.0875 13.0136 12.8933L11.9247 9.05334C11.9189 9.03407 11.9192 9.01348 11.9256 8.99439C11.932 8.9753 11.9441 8.95864 11.9603 8.94668L15.1114 6.45779Z" fill="#9940B1"/>
+</svg>
+              {% endfor %}
+            </div>
+          {% endif %}
+          
+        </div>
+        <div class="c-top-content">
+            <h2 class="c-testimonal-header">{{ section.settings.heading }}</h2>
+            <div>{{ section.settings.content_text }}</div>
+            <h3>{{ section.settings.lastname }}</h3>
+        </div>
+       </div>
+
+      {%- if is_mega_menu -%}
+        {%- render 'navigation-promo-block', navigation_layout: layout, mega_menu_block: mega_menu_block, is_navigation_drawer: true, link_col: link.links.size -%}
+      {%- else -%}
+        {%- comment -%}
+        ----------------------------------------------------------------------------------------------------------------
+        SOCIAL MEDIA + LOCALIZATION
+        ----------------------------------------------------------------------------------------------------------------
+        {%- endcomment -%}
+
+        {%- if section.settings.show_social_media -%}
+          {%- capture social_media -%}{%- render 'social-media' -%}{%- endcapture -%}
+        {%- endif -%}
+
+        {%- if show_country_selector and localization.available_countries.size > 1 -%}
+          {%- assign country_selector = true -%}
+        {%- endif -%}
+
+        {%- if show_locale_selector and localization.available_languages.size > 1 -%}
+          {%- assign locale_selector = true -%}
+        {%- endif -%}
+
+        {%- if social_media != blank or country_selector or locale_selector or shop.customer_accounts_enabled -%}
+          <div class="panel-footer v-stack gap-5">
+           
+
+            {%- if country_selector or locale_selector or shop.customer_accounts_enabled -%}
+              <div class="panel-footer__localization-wrapper h-stack gap-6 border-t md:hidden">
+                {%- if country_selector -%}
+                  {%- render 'localization-selector', type: 'country', show_country_name: show_country_name, show_country_flag: show_country_flag -%}
+                {%- endif -%}
+
+                {%- if locale_selector -%}
+                  {%- render 'localization-selector', type: 'locale' -%}
+                {%- endif -%}
+
+                {%- if shop.customer_accounts_enabled -%}
+                  <div class="ham-last-optn">
+                  <a href="{{ routes.account_url }}" class="panel-footer__account-link bold text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+                  <path d="M4.75031 4.75001C4.75031 3.88813 5.09282 3.06121 5.70219 2.45188C6.31157 1.84251 7.13846 1.5 8.00033 1.5C8.86215 1.5 9.68913 1.84251 10.2985 2.45188C10.9078 3.06125 11.2503 3.88815 11.2503 4.75001C11.2503 5.61184 10.9078 6.43881 10.2985 7.04815C9.68909 7.65752 8.86219 8.00003 8.00033 8.00003C7.13845 7.99878 6.31286 7.65628 5.70353 7.04691C5.09415 6.43753 4.75165 5.61197 4.75041 4.75011L4.75031 4.75001ZM13.9735 13.8313C13.5804 11.9945 12.3647 10.4408 10.676 9.61761C8.98725 8.79511 7.01351 8.79511 5.32485 9.61761C3.63605 10.4407 2.42058 11.9944 2.02738 13.8313C1.94676 14.2357 2.05301 14.6539 2.3155 14.9713C2.5905 15.307 3.00238 15.5013 3.43675 15.5001H12.5642C12.9986 15.5013 13.4105 15.307 13.6855 14.9707C13.948 14.6538 14.0542 14.2351 13.9736 13.8313H13.9735Z" fill="black"/>
+                  </svg>{{- 'header.general.account' | t -}}</a>
+                  </div>
+                {%- endif -%}
+                {{- social_media -}}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if link_level_2 != blank -%}
+    <div class="panel gap-8">
+      {{ link_level_2 }}
+    </div>
+  {%- endif -%}
+
+  {%- if link_level_3 != blank %}
+    <div class="panel">
+      {{ link_level_3 }}
+    </div>
+  {%- endif -%}
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const collectionItems = document.querySelectorAll('.collection-item');
+    const panels = document.querySelectorAll('.sub-collection-panel');
+    const backButtons = document.querySelectorAll('.back-button');
+
+    collectionItems.forEach((item, index) => {
+        // Check if the corresponding sub-collection panel exists
+        const panelToShow = document.querySelector(`.sub-collection-panel[data-panel-index="${index}"]`);
+
+        if (panelToShow) {
+            // If a panel exists, set up the click event to show it
+            item.addEventListener('click', function (e) {
+                e.preventDefault(); // Prevent the default action
+                showPanel(index);
+            });
+        }
+    });
+
+    backButtons.forEach((button) => {
+        button.addEventListener('click', function () {
+            hidePanels();
+        });
+    });
+
+    function showPanel(panelIndex) {
+        hidePanels();  // Hide any other open panels
+        const panelToShow = document.querySelector(`.sub-collection-panel[data-panel-index="${panelIndex}"]`);
+        const mainPanelToHide = document.querySelector(".collection-grid");
+        const overflowedPanelToScrollTop = document.querySelector(".panel__wrapper");
+        if (panelToShow) {
+            // panelToShow.style.visibility = 'visible';
+            // panelToShow.style.opacity = 1;
+            panelToShow.style.display = 'block';
+            mainPanelToHide.style.display  = 'hide';
+            overflowedPanelToScrollTop.scrollTop = 0;
+        }
+    }
+
+    function hidePanels() {
+      const mainPanelToHide = document.querySelector(".collection-grid");
+        panels.forEach(panel => {
+            // panel.style.visibility = 'hidden';
+            // panel.style.opacity = 0;
+            panel.style.display = 'none';
+          });
+          
+        mainPanelToHide.style.display  = 'grid';
+        mainPanelToHide.scrollTop = 0;
+    }
+});
+
+$(document).ready(function () {
+    // Cache elements
+    const $vStackGap4 = $('.v-stack.gap-4'); // The main menu
+    const $collectionItems = $('.collection-item'); // Collection items that open sub-collection panels
+    const $panels = $('.sub-collection-panel'); // Sub-collection panels
+    const $backButtons = $('.back-button'); // Back buttons in sub-collection panels
+
+    // Handle collection item clicks
+    $collectionItems.on('click', function () {
+        const panelIndex = $(this).data('panel-index'); // Get the index of the clicked item
+        const $panelToShow = $(`.sub-collection-panel[data-panel-index="${panelIndex}"]`); // Find the corresponding panel
+        const $mainCollectionPanel = $(".collection-grid");
+        const $overflowedPanelToScrollTop = $(".panel__wrapper");
+
+        if ($panelToShow.length > 0) {
+            // Hide the main menu
+            $vStackGap4.addClass('hidden');
+
+            // Show the corresponding sub-collection panel
+            hidePanels(); // Hide any other open panels
+            // $panelToShow.css({
+            //     'visibility': 'visible',
+            //     'opacity': 1
+            // });
+            $panelToShow.css({
+                'display': 'block'
+            });
+            $mainCollectionPanel.css({
+                'display': 'none'
+            });
+            
+            $overflowedPanelToScrollTop.scrollTop(0);
+        }
+    });
+
+    // Handle back button clicks
+    $backButtons.on('click', function () {
+        // Show the main menu
+        $vStackGap4.removeClass('hidden');
+
+        // Hide the sub-collection panels
+        hidePanels();
+    });
+
+    function hidePanels() {
+      const $mainCollectionPanel = $(".collection-grid");
+        // $panels.css({
+        //     'visibility': 'hidden',
+        //     'opacity': 0
+        // });
+        $panels.css({
+            'display': 'none'
+        });
+        $mainCollectionPanel.css({
+            'display': 'grid'
+        });
+
+        $mainCollectionPanel.scrollTop(0);
+    }
+});
+</script>

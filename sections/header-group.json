@@ -1,0 +1,352 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "c_countdown_timer_bB6Lxr": {
+      "type": "c-countdown-timer",
+      "disabled": true,
+      "settings": {
+        "bg_color": "#000000",
+        "text_color": "#ffffff",
+        "time_bg_color": "#ffffff",
+        "time_text_color": "#000000",
+        "text": "<p><strong>EARLY BLACK FRIDAY SALE UP TO 75% OFF | CODE: BF75</strong></p>",
+        "date_picker": "11-23-2024",
+        "time_picker": "12:00 PM"
+      }
+    },
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "a2dbe60c-1472-4fa0-b80e-10e47d6a0bac": {
+          "type": "message",
+          "settings": {
+            "text": "EARLY BLACK FRIDAY SALE | UP TO 75% OFF | CODE: BF75",
+            "url": ""
+          }
+        },
+        "message": {
+          "type": "message",
+          "disabled": true,
+          "settings": {
+            "text": "FREE SHIPPING $70+ | FREE GIFT $80+",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "a2dbe60c-1472-4fa0-b80e-10e47d6a0bac",
+        "message"
+      ],
+      "settings": {
+        "enable_sticky": true,
+        "autoplay": false,
+        "cycle_speed": 6,
+        "text_size": "text-base",
+        "navigation_mode": "scrolling",
+        "scrolling_speed": 20,
+        "parent_link": "",
+        "background": "#9940b1",
+        "background_gradient": "",
+        "text_color": "#ffffff"
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "collection_xgXDiV": {
+          "type": "collection",
+          "settings": {
+            "collection": "compression-socks",
+            "custom_title": "",
+            "sub_collection": ""
+          }
+        },
+        "collection_YwERp3": {
+          "type": "collection",
+          "settings": {
+            "collection": "3-pair-packs",
+            "custom_title": "Bundle & Save",
+            "sub_collection": ""
+          }
+        },
+        "collection_tAfEQJ": {
+          "type": "collection",
+          "settings": {
+            "collection": "solid-colors",
+            "image": "shopify://shop_images/2_699ab478-1be1-42a7-bdde-ec39dde078ab.png",
+            "custom_title": "Basic Compression Socks",
+            "sub_collection": ""
+          }
+        },
+        "collection_hENkVN": {
+          "type": "collection",
+          "settings": {
+            "collection": "themed-compression-socks",
+            "image": "shopify://shop_images/Untitled_design.jpg",
+            "custom_title": "",
+            "sub_collection": "2nd-compression-socks"
+          }
+        },
+        "collection_hhhEMJ": {
+          "type": "collection",
+          "settings": {
+            "collection": "performance-socks",
+            "image": "shopify://shop_images/Untitled_design_14.png",
+            "custom_title": "",
+            "sub_collection": "performance-socks-1"
+          }
+        },
+        "collection_7D4api": {
+          "type": "collection",
+          "settings": {
+            "collection": "crazy-no-show",
+            "custom_title": "No-Show Socks",
+            "sub_collection": ""
+          }
+        },
+        "collection_VUhTWJ": {
+          "type": "collection",
+          "settings": {
+            "collection": "diabetic-socks",
+            "custom_title": "",
+            "sub_collection": ""
+          }
+        },
+        "collection_dKNrgc": {
+          "type": "collection",
+          "settings": {
+            "collection": "all-crazy-compression-sleeves",
+            "custom_title": "",
+            "sub_collection": ""
+          }
+        },
+        "mega_menu_9qCKna": {
+          "type": "mega_menu",
+          "settings": {
+            "menu_item": "Women",
+            "title": "Featured",
+            "mega_menu_collection": "featured-1",
+            "title2": "Compression Socks",
+            "today_menu": "2nd-compression-socks",
+            "title3": "You May Also Like",
+            "another_menu": "you-may-also-like",
+            "layout": "horizontal",
+            "submenu_style": "bold_heading",
+            "menu_title1": "",
+            "image_heading_1": "",
+            "image_link_1": "",
+            "image_text_color_1": "#ffffff",
+            "image_heading_2": "",
+            "image_link_2": "",
+            "image_text_color_2": "#ffffff",
+            "image_heading_3": "",
+            "image_link_3": "",
+            "image_text_color_3": "#ffffff",
+            "image_heading_4": "",
+            "image_link_4": "",
+            "image_text_color_4": "#ffffff",
+            "image_heading_5": "",
+            "image_link_5": "",
+            "image_text_color_5": "#ffffff",
+            "image_heading_6": "",
+            "image_link_6": "",
+            "image_text_color_6": "#ffffff",
+            "menu_title2": "",
+            "col2_image_heading_1": "",
+            "col2_image_link_1": "",
+            "col2_image_text_color_1": "#ffffff",
+            "col2_image_heading_2": "",
+            "col2_image_link_2": "",
+            "col2_image_text_color_2": "#ffffff",
+            "col2_image_heading_3": "",
+            "col2_image_link_3": "",
+            "col2_image_text_color_3": "#ffffff",
+            "col2_image_heading_4": "",
+            "col2_image_link_4": "",
+            "col2_image_text_color_4": "#ffffff",
+            "col2_class": "",
+            "product": "",
+            "product_card_background": "",
+            "product_card_text_color": "",
+            "promo_content_layout": "grid",
+            "stretch_promo": true,
+            "drawer_link_image": "hide"
+          }
+        },
+        "mega_menu_VqFFzm": {
+          "type": "mega_menu",
+          "settings": {
+            "menu_item": "Discover & Learn",
+            "title": "Learn",
+            "mega_menu_collection": "",
+            "title2": "Menu",
+            "today_menu": "",
+            "title3": "Menu",
+            "another_menu": "",
+            "layout": "horizontal",
+            "submenu_style": "bold_heading",
+            "menu_title1": "Discover",
+            "image_1": "shopify://shop_images/nav_menu_track.png",
+            "image_heading_1": "Track My Order",
+            "image_link_1": "shopify://pages/return-exchange-policy",
+            "image_text_color_1": "#9941b2",
+            "image_2": "shopify://shop_images/nav_menu_gift.png",
+            "image_heading_2": "Gift Cards",
+            "image_link_2": "shopify://products/gift-card",
+            "image_text_color_2": "#9941b2",
+            "image_3": "shopify://shop_images/nav_menu_custom_socks.png",
+            "image_heading_3": "Custom Socks",
+            "image_link_3": "shopify://pages/custom-socks-for-every-event",
+            "image_text_color_3": "#9941b2",
+            "image_4": "shopify://shop_images/nav_menu_affiliate.png",
+            "image_heading_4": "Affiliate Programs",
+            "image_link_4": "shopify://pages/affiliate-program",
+            "image_text_color_4": "#9941b2",
+            "image_5": "shopify://shop_images/nav_menu_collective_1.jpg",
+            "image_heading_5": "Collective (Supplier)",
+            "image_link_5": "shopify://pages/terms-of-use-and-private-policy",
+            "image_text_color_5": "#9941b2",
+            "image_6": "shopify://shop_images/nav_menu_wholesale.png",
+            "image_heading_6": "Wholesale",
+            "image_link_6": "shopify://pages/wholesale",
+            "image_text_color_6": "#9941b2",
+            "menu_title2": "Learn",
+            "col2_image_1": "shopify://shop_images/nav_menu_our_story.jpg",
+            "col2_image_heading_1": "Our Story",
+            "col2_image_link_1": "shopify://pages/our-story",
+            "col2_image_text_color_1": "#9941b2",
+            "col2_image_2": "shopify://shop_images/nav_menu_community.png",
+            "col2_image_heading_2": "Community",
+            "col2_image_link_2": "shopify://pages/crazy-community",
+            "col2_image_text_color_2": "#9941b2",
+            "col2_image_3": "shopify://shop_images/nav_menu_blog.jpg",
+            "col2_image_heading_3": "Blog",
+            "col2_image_link_3": "shopify://blogs/crazy-compression",
+            "col2_image_text_color_3": "#9941b2",
+            "col2_image_4": "shopify://shop_images/nav_menu_faq.jpg",
+            "col2_image_heading_4": "FAQ’s",
+            "col2_image_link_4": "shopify://pages/faqs",
+            "col2_image_text_color_4": "#9941b2",
+            "col2_class": "c_d_flex",
+            "product": "",
+            "product_card_background": "",
+            "product_card_text_color": "",
+            "promo_content_layout": "grid",
+            "stretch_promo": false,
+            "drawer_link_image": "hide"
+          }
+        }
+      },
+      "block_order": [
+        "collection_xgXDiV",
+        "collection_YwERp3",
+        "collection_tAfEQJ",
+        "collection_hENkVN",
+        "collection_hhhEMJ",
+        "collection_7D4api",
+        "collection_VUhTWJ",
+        "collection_dKNrgc",
+        "mega_menu_9qCKna",
+        "mega_menu_VqFFzm"
+      ],
+      "settings": {
+        "enable_sticky": true,
+        "hide_on_scroll": false,
+        "logo": "shopify://shop_images/LOGO_887b12ed-b53e-47c1-a040-e715c3cd8a49.png",
+        "logo_max_width": 235,
+        "logo_mobile_max_width": 135,
+        "menu": "demomenu",
+        "sidebar_menu": "home-menu",
+        "secondary_menu": "",
+        "menu_open_trigger": "hover",
+        "opening_from": "bottom",
+        "show_badge": false,
+        "ratings": 5,
+        "content_text": "<p>I'm always on my feet, and these socks have been a game-changer. They fit perfectly, provide great support, and help prevent swelling. I've even recommended them to my patients. If you're looking for a good pair of socks, these are the ones to get!</p>",
+        "heading": "\"Best socks! They fit perfectly!\"",
+        "lastname": "Jane Doe | Mom & Nurse",
+        "layout": "logo_left_navigation_center",
+        "show_social_media": true,
+        "show_locale_selector": false,
+        "show_country_selector": false,
+        "show_country_flag": false,
+        "show_country_name": false,
+        "transparent_header_text_color": "#272727",
+        "transparent_logo": "shopify://shop_images/LOGO_887b12ed-b53e-47c1-a040-e715c3cd8a49.png",
+        "reduce_padding": true,
+        "background_opacity": 100,
+        "background_blur_radius": 0
+      }
+    },
+    "95788dc6-8e1d-46f8-9619-d95ef700cf30": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "settings": {
+        "full_width": false,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "liquid": "<p><img src=\"https://cdn.shopify.com/s/files/1/1102/3318/files/Screenshot_2023-05-19_at_2.34.06_PM.png?v=1684524109&amp;width=485\" style=\"display: block; margin-left: auto; margin-right: auto;\"></p>",
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
+    },
+    "3198f047-cdb9-4f6e-be3b-92a133641226": {
+      "type": "custom-html",
+      "disabled": true,
+      "custom_css": [],
+      "settings": {
+        "full_width": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "html": "<p style=\"text-align: center\">Write or copy/paste HTML code</p>",
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
+    },
+    "16946836810a068320": {
+      "type": "apps",
+      "disabled": true,
+      "settings": {
+        "full_width": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
+    },
+    "17090573488f0a2dab": {
+      "type": "apps",
+      "disabled": true,
+      "settings": {
+        "full_width": true,
+        "remove_vertical_spacing": false,
+        "remove_horizontal_spacing": false,
+        "background": "",
+        "background_gradient": "",
+        "text_color": ""
+      }
+    }
+  },
+  "order": [
+    "c_countdown_timer_bB6Lxr",
+    "announcement-bar",
+    "header",
+    "95788dc6-8e1d-46f8-9619-d95ef700cf30",
+    "3198f047-cdb9-4f6e-be3b-92a133641226",
+    "16946836810a068320",
+    "17090573488f0a2dab"
+  ]
+}

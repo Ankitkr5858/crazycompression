@@ -1,0 +1,288 @@
+{%- if link.links.size > 0 -%}
+  <style>
+    @media screen and (min-width: 1150px) {
+      #mega-menu-{{ mega_menu_block.id }} {
+        --mega-menu-nav-column-max-width: {% if mega_menu_block.settings.submenu_style == 'bold_text' %}{% if link.links.size <= 2 %}240px{% else %}200px{% endif %}{% else %}{% if link.links.size <= 2 %}180px{% else %}160px{% endif %}{% endif %};
+        --mega-menu-justify-content: {% if link.links.size == 0 or mega_menu_block.settings.layout == 'horizontal_center' and mega_menu_block.settings.stretch_promo == false %}center{% else %}space-between{% endif %};
+        --mega-menu-nav-gap: {% if mega_menu_block.settings.stretch_promo %}var(--spacing-12){% else %}var(--spacing-8){% endif %};
+
+        {% if link.links.size > 3 %}
+          --column-list-max-width: 75%;
+        {% endif %}
+      }
+    }
+
+    @media screen and (min-width: 1400px) {
+      #mega-menu-{{ mega_menu_block.id }} {
+        --mega-menu-nav-column-max-width: {% if mega_menu_block.settings.submenu_style == 'bold_text' %}{% if link.links.size == 1 %}260px{% elsif link.links.size == 2 %}240px{% else %}210px{% endif %}{% else %}{% if link.links.size == 1 %}220px{% elsif link.links.size == 2 %}200px{% else %}180px{% endif %}{% endif %};
+        --mega-menu-nav-gap: {% if mega_menu_block.settings.layout == 'horizontal_center' %}var(--spacing-12){% else %}var(--spacing-16){% endif %};
+
+        {% if link.links.size > 4 %}
+          --column-list-max-width: 75%;
+        {% else %}
+          --column-list-max-width: max-content;
+        {% endif %}
+      }
+    }
+
+    @media screen and (min-width: 1600px) {
+      #mega-menu-{{ mega_menu_block.id }} {
+        --mega-menu-nav-gap: var(--spacing-16);
+      }
+    }
+
+    @media screen and (min-width: 1800px) {
+      #mega-menu-{{ mega_menu_block.id }} {
+        --mega-menu-nav-gap: var(--spacing-20);
+      }
+    }
+  </style>
+{%- endif -%}
+
+<div
+  id="mega-menu-{{ mega_menu_block.id }}"
+  class="new-mega-menu mega-menu {% if link.links.size == 0 %}justify-center{% endif %} {{ mega_menu_block.settings.col2_class }}"
+>
+  {%- if mega_menu_block.settings.mega_menu_collection -%}
+    {%- assign mega_menu_links = linklists[mega_menu_block.settings.mega_menu_collection].links -%}
+    {%- if mega_menu_links.size > 0 -%}
+      <div class="megamenu header-megamenu1">
+        <h2 class="c-head-menu-title menu-title">{{ mega_menu_block.settings.title }}</h2>
+        <ul class="mega-menu__nav grid grid-cols-{{ mega_menu_links.size }} gap-3" role="list">
+          {%- for sub_link in mega_menu_links -%}
+            <li class="v-stack gap-4 justify-items-start">
+              <a
+                class="c-featured-block block w-full h-full"
+                href="{{ sub_link.url }}"
+                {% if sub_link.current %}
+                  aria-current="page"
+                {% endif %}
+                {% comment %} style="background:url({{ sub_link.object.image | img_url: 'medium' }}); background-repeat: no-repeat; object-fit: cover; background-position: center;" {% endcomment %}
+              >
+                {%- if sub_link.object.image -%}
+                  <img
+                    src="{{ sub_link.object.image | image_url: width: 1000, height: 1000 }}"
+                    alt="{{ sub_link.title }}"
+                    class="c-featured-image object-cover"
+                  >
+                {%- endif -%}
+                <span class="home-mega-menu-title block font-bold text-lg {% if mega_menu_block.settings.submenu_style == 'bold_heading' %}h5{% endif %}">
+                  <span class="block {% if mega_menu_block.settings.submenu_style == 'bold_text' %}link-faded{% else %}reversed-link hover:show{% endif %}">
+                    {{- sub_link.title -}}
+                  </span>
+                </span>
+              </a>
+
+              {%- if sub_link.levels > 0 -%}
+                <ul class="sub-menu__nav grid grid-cols-1 gap-2 hidden" role="list">
+                  {%- for sub_sub_link in sub_link.links -%}
+                    <li class="new-sub-collection-item flex items-center">
+                      <a
+                        href="{{ sub_sub_link.url }}"
+                        class="block text-sm w-full h-full {% if mega_menu_block.settings.submenu_style == 'bold_text' %}font-semibold{% else %}link-faded{% endif %}"
+                      >
+                        {%- if sub_sub_link.object.image -%}
+                          <div class="sub-new-collection-image w-12 h-12 mr-3">
+                            <img
+                              src="{{ sub_sub_link.object.image | img_url: 'medium' }}"
+                              alt="{{ sub_sub_link.title }}"
+                              class=" object-cover"
+                            >
+                          </div>
+                        {%- endif -%}
+                        <span
+                          {% if mega_menu_block.settings.submenu_style == 'bold_text' %}
+                            class="reversed-link hover:show"
+                          {% endif %}
+                        >
+                          {{- sub_sub_link.title -}}
+                        </span>
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+  {%- if mega_menu_block.settings.today_menu -%}
+    {%- assign today_menu_links = linklists[mega_menu_block.settings.today_menu].links -%}
+    {%- if today_menu_links.size > 0 -%}
+      <div class="megamenu header-megamenu2">
+        <h2 class="c-head-menu-title menu-title">{{ mega_menu_block.settings.title2 }}</h2>
+        <ul class="today-menu__nav grid grid-cols-{{ today_menu_links.size }}" role="list">
+          {%- for sub_link in today_menu_links -%}
+            <li class="v-stack gap-4 justify-items-start">
+              <a
+                class="c-theme-block block w-full h-full"
+                href="{{ sub_link.url }}"
+                {% if sub_link.current %}
+                  aria-current="page"
+                {% endif %}
+              >
+                {%- if sub_link.object.image -%}
+                  <div class="new-collection-image w-24 h-24 mb-2">
+                    <img
+                      src="{{ sub_link.object.image | img_url: 'medium' }}"
+                      alt="{{ sub_link.title }}"
+                      class="object-cover"
+                    >
+                  </div>
+                {%- endif -%}
+                <span class="home-mega-menu-title block font-bold text-lg {% if mega_menu_block.settings.submenu_style == 'bold_heading' %}h5{% endif %}">
+                  <span class="block {% if mega_menu_block.settings.submenu_style == 'bold_text' %}link-faded{% else %}reversed-link hover:show{% endif %}">
+                    {{- sub_link.title -}}
+                  </span>
+                </span>
+              </a>
+
+              {%- if sub_link.levels > 0 -%}
+                <ul class="sub-menu__nav grid grid-cols-1 gap-2 hidden" role="list">
+                  {%- for sub_sub_link in sub_link.links -%}
+                    <li class="new-sub-collection-item flex items-center">
+                      <a
+                        href="{{ sub_sub_link.url }}"
+                        class="block text-sm w-full h-full {% if mega_menu_block.settings.submenu_style == 'bold_text' %}font-semibold{% else %}link-faded{% endif %}"
+                      >
+                        {%- if sub_sub_link.object.image -%}
+                          <div class="sub-new-collection-image w-12 h-12 mr-3">
+                            <img
+                              src="{{ sub_sub_link.object.image | img_url: 'medium' }}"
+                              alt="{{ sub_sub_link.title }}"
+                              class="object-cover"
+                            >
+                          </div>
+                        {%- endif -%}
+                        <span
+                          {% if mega_menu_block.settings.submenu_style == 'bold_text' %}
+                            class="reversed-link hover:show"
+                          {% endif %}
+                        >
+                          {{- sub_sub_link.title -}}
+                        </span>
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+  {%- if mega_menu_block.settings.another_menu -%}
+    {%- assign another_menu_links = linklists[mega_menu_block.settings.another_menu].links -%}
+    {%- if another_menu_links.size > 0 -%}
+      <div class="megamenu header-megamenu3">
+        <h2 class="c-head-menu-title menu-title">{{ mega_menu_block.settings.title3 }}</h2>
+        <ul class="another-menu__nav grid grid-cols-{{ another_menu_links.size }} gap-8" role="list">
+          {%- for sub_link in another_menu_links -%}
+            <li class="c-ymal-block gap-4 justify-items-start">
+              <a
+                class="block"
+                href="{{ sub_link.url }}"
+                {% if sub_link.current %}
+                  aria-current="page"
+                {% endif %}
+              >
+                {%- if sub_link.object.image -%}
+                  <div class="new-collection-image w-24 h-24 mb-2">
+                    <img
+                      src="{{ sub_link.object.image | img_url: 'medium' }}"
+                      alt="{{ sub_link.title }}"
+                      class="object-contain"
+                    >
+                  </div>
+                {%- endif -%}
+                <span class="home-mega-menu-title block font-bold text-lg {% if mega_menu_block.settings.submenu_style == 'bold_heading' %}h5{% endif %}">
+                  <span class="block {% if mega_menu_block.settings.submenu_style == 'bold_text' %}link-faded{% else %}reversed-link hover:show{% endif %}">
+                    {{- sub_link.title -}}
+                  </span>
+                </span>
+              </a>
+
+              {%- if sub_link.links.size > 0 -%}
+                <ul class="sub-menu__nav grid grid-cols-1 gap-2" role="list">
+                  {%- for sub_sub_link in sub_link.links -%}
+                    <li class="new-sub-collection-item flex items-center">
+                      <a
+                        href="{{ sub_sub_link.url }}"
+                        class="block text-sm w-full h-full {% if mega_menu_block.settings.submenu_style == 'bold_text' %}font-semibold{% else %}link-faded{% endif %}"
+                      >
+                        <span
+                          {% if mega_menu_block.settings.submenu_style == 'bold_text' %}
+                            class="reversed-link hover:show"
+                          {% endif %}
+                        >
+                          {{- sub_sub_link.title -}}
+                        </span>
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+
+  {% liquid
+    # To maximize space, we force a carousel mode depending on the actual content
+    assign promo_item_count = 0
+    assign use_carousel_fallback_until = ''
+
+    for i in (1..3)
+      assign image_setting = 'image_' | append: i
+
+      if mega_menu_block.settings[image_setting] != blank
+        assign promo_item_count = promo_item_count | plus: 1
+      endif
+    endfor
+
+    if mega_menu_block.settings.product != blank
+      assign promo_item_count = promo_item_count | plus: 1
+    endif
+
+    if link.links.size > 0 and promo_item_count == 4 or mega_menu_block.settings.promo_content_layout == 'carousel'
+      assign force_carousel_mode = true
+    else
+      if link.links.size == 2
+        if promo_item_count == 3 or mega_menu_block.settings.promo_content_layout == 'carousel'
+          assign force_carousel_mode = true
+        else
+          assign force_carousel_mode = false
+        endif
+      else
+        assign force_carousel_mode = false
+      endif
+    endif
+  %}
+
+  {%- if force_carousel_mode -%}
+    {%- render 'navigation-promo-block', mega_menu_block: mega_menu_block, force_carousel_mode: force_carousel_mode -%}
+  {% else %}
+    {%- if use_carousel_fallback_until != '' -%}
+      {%- render 'navigation-promo-block',
+        navigation_layout: navigation_layout,
+        mega_menu_block: mega_menu_block,
+        link_col: link.links.size,
+        is_navigation_drawer: false,
+        use_carousel_fallback_until: use_carousel_fallback_until
+      -%}
+    {%- endif -%}
+
+    {%- render 'navigation-promo-block',
+      navigation_layout: navigation_layout,
+      mega_menu_block: mega_menu_block,
+      link_col: link.links.size,
+      is_navigation_drawer: false,
+      hide_promo_until: use_carousel_fallback_until
+    -%}
+  {%- endif -%}
+</div>
